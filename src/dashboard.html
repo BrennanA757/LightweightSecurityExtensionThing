@@ -2,6 +2,10 @@
 <html>
   <link rel="stylesheet" href="output.css" />
   <link rel="stylesheet" href="dashboard.css" />
+  <link
+    rel="stylesheet"
+    href="../static/purecss-circular-progress-bar-master/css-circular-prog-bar.css"
+  />
   <div class="dark:bg-grey-800" style="display: flex; align-items: center">
     <header
       class="text-3x1 font-bold"
@@ -9,13 +13,13 @@
     >
       Dashboard
     </header>
-    <body style="background-color: lightblue">
-      <div class="score-container dark:bg-grey-700">
-        <svg class="score-ring" width="160" height="160">
-          <circle class="ring-bg" cx="80" cy="80" r="70" />
-          <circle class="ring-fill" cx="80" cy="80" r="70" />
-        </svg>
-        <div class="score-text dark:text-white" id="scoreText">0%</div>
+    <body style="background-color: black">
+      <div class="progress-circle" id="score-circle">
+        <span id="scoreText">10%</span>
+        <div class="left-half-clipper">
+          <div class="first50-bar"></div>
+          <div class="value-bar"></div>
+        </div>
       </div>
       <button
         id="toggleThemeBtn"

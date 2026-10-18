@@ -1,24 +1,21 @@
 function updateCircularScore(score) {
-  const circle = document.querySelector(".ring-fill");
-  const text = document.getElementById("scoreText");
-
-  const radius = 70;
-  const circumference = 2 * Math.PI * radius;
-
-  circle.style.strokeDasharray = circumference;
-
-  const offset = circumference - (score / 100) * circumference;
-  circle.style.strokeDashoffset = offset;
-
-  text.innerHTML = score + "%";
-
-  if (score > 80) {
-    circle.style.stroke = "#4caf50";
-  } else if (score > 50) {
-    circle.style.stroke = "#adaf4c";
-  } else {
-    circle.style.stroke = "#e82424";
+  const circle = document.getElementById("score-circle");
+  if (circle == null) {
+    console.log("Cannot find score circle element.");
+    return;
   }
+  circle.classList.add("p" + score);
+  console.log("Updating circle fill amount to " + score);
+}
+
+function updateScoreText(score) {
+  const text = document.getElementById("scoreText");
+  if (text == null) {
+    console.log("Cannot find score text.");
+    return;
+  }
+  text.innerHTML = (score + "%").toString();
+  console.log("Updating score text to " + score);
 }
 
 function toggleLightDarkTheme() {
@@ -34,17 +31,28 @@ function toggleLightDarkTheme() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const { latestScore } = await chrome.storage.local.get("latestScore");
-
-  if (latestScore) {
-    updateCircularScore(latestScore);
-  }
-
-  const btn = document.getElementById("toggleThemeBtn");
-  btn.addEventListener("click", () => {
-    const isDark = document.documentElement.classList.toggle("dark");
-    localStorage.theme = isDark ? "dark" : "light";
+  chrome.storage.local.get("latestScore", (result) => {
+    if (result.latestScore !== undefined) {
+      updateCircularScore(result.latestScore);
+      updateScoreText(result.latestScore);
+      console.log("Updating Score to " + result.latestScore);
+    }
+    console.log("Result: ", JSON.stringify(result));
   });
 
-  toggleLightDarkTheme();
+  // if (latestScore) {
+  //   updateCircularScore(latestScore);
+  //   updateScoreText(latestScore);
+  //   console.log("Updating score");
+  // }
+
+  // const btn = document.getElementById("toggleThemeBtn");
+  // btn.addEventListener("click", () => {
+  //   const isDark = document.documentElement.classList.toggle("dark");
+  //   localStorage.theme = isDark ? "dark" : "light";
+  // });
+
+  // toggleLightDarkTheme();
+
+  console.log("DOM fully loaded");
 });

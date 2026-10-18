@@ -28,7 +28,6 @@ document.getElementById("analyze").addEventListener("click", async () => {
         .map((c) => `<li>${c.name} (${c.secure ? "Secure" : "Insecure"})</li>`)
         .join("");
 
-      console.log("Updating dashboard score: " + score);
       chrome.storage.local.set({ latestScore: score });
     },
   );
