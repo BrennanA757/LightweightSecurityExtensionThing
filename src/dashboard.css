@@ -1,0 +1,36 @@
+.score-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 20px auto;
+}
+
+.score-ring {
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 12;
+}
+
+.ring-fill {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke: #4caf50; /* default green */
+  transition:
+    stroke 0.3s ease,
+    stroke-dashoffset 0.6s ease;
+}
+
+.score-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+}

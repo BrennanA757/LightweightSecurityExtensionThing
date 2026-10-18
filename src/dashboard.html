@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <link rel="stylesheet" href="output.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <div class="dark:bg-grey-800" style="display: flex; align-items: center">
+    <header
+      class="text-3x1 font-bold"
+      style="background-color: rgb(131, 181, 198)"
+    >
+      Dashboard
+    </header>
+    <body style="background-color: lightblue">
+      <div class="score-container dark:bg-grey-700">
+        <svg class="score-ring" width="160" height="160">
+          <circle class="ring-bg" cx="80" cy="80" r="70" />
+          <circle class="ring-fill" cx="80" cy="80" r="70" />
+        </svg>
+        <div class="score-text dark:text-white" id="scoreText">0%</div>
+      </div>
+      <button
+        id="toggleThemeBtn"
+        style="
+          background-color: black;
+          border-color: grey;
+          color: white;
+          border-width: 0.2rem;
+          padding: 0.1rem;
+          font-size: 1rem;
+          border-radius: 0.5rem;
+        "
+      >
+        Toggle Theme
+      </button>
+    </body>
+  </div>
+  <script src="dashboard.js"></script>
+</html>

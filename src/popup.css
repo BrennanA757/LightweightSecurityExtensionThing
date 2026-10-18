@@ -1,0 +1,18 @@
+body {
+  font-family: Arial;
+  width: 250px;
+  padding: 10px;
+}
+#score {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.good {
+  color: green;
+}
+.medium {
+  color: orange;
+}
+.bad {
+  color: red;
+}

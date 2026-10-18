@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Privacy Guardian",
+  "version": "1.0",
+  "description": "Blocks trackers, analyzes cookies, and shows a privacy score.",
+
+  "permissions": ["cookies", "storage", "activeTab", "declarativeNetRequest"],
+
+  "host_permissions": ["<all_urls>"],
+
+  "background": {
+    "service_worker": "src/background.js"
+  },
+
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_icon": "icons/padlock.png"
+  },
+
+  "icons": {
+    "128": "icons/padlock.png"
+  },
+
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "src/rules.json"
+      }
+    ]
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/dashboard.html",
+        "src/dashboard.js",
+        "src/dashboard.css"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
