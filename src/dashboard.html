@@ -7,34 +7,20 @@
     href="../static/purecss-circular-progress-bar-master/css-circular-prog-bar.css"
   />
   <div class="dark:bg-grey-800" style="display: flex; align-items: center">
-    <header
-      class="text-3x1 font-bold"
-      style="background-color: rgb(131, 181, 198)"
-    >
-      Dashboard
-    </header>
+    <header class="font-bold">Dashboard</header>
     <body style="background-color: black">
-      <div class="progress-circle" id="score-circle">
-        <span id="scoreText">10%</span>
-        <div class="left-half-clipper">
-          <div class="first50-bar"></div>
-          <div class="value-bar"></div>
+      <div id="first-section" class="box">
+        <button id="toggleThemeBtn">Toggle Theme</button>
+      </div>
+      <div id="section-section" class="box">
+        <div class="progress-circle" id="score-circle">
+          <span id="scoreText">10%</span>
+          <div class="left-half-clipper">
+            <div class="first50-bar"></div>
+            <div class="value-bar"></div>
+          </div>
         </div>
       </div>
-      <button
-        id="toggleThemeBtn"
-        style="
-          background-color: black;
-          border-color: grey;
-          color: white;
-          border-width: 0.2rem;
-          padding: 0.1rem;
-          font-size: 1rem;
-          border-radius: 0.5rem;
-        "
-      >
-        Toggle Theme
-      </button>
     </body>
   </div>
   <script src="dashboard.js"></script>
