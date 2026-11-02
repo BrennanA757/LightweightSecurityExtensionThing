@@ -13,9 +13,10 @@
       <div id="score" class="align_text_center">100</div>
     </div>
 
-    <script src="popup.js"></script>
+    <!-- Script element needs to go after button for button to be loaded first. -->
     <footer class="footer">
-      <a href="src/dashboard.html" id="openTab" class="bad">Dashboard</a>
+      <button id="openTab" class="bad">Dashboard</button>
     </footer>
+    <script src="popup.js"></script>
   </body>
 </html>
