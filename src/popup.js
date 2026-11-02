@@ -1,4 +1,6 @@
-document.getElementById("analyze").addEventListener("click", async () => {
+window.addEventListener("load", runAnalysis);
+
+async function runAnalysis() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   let domain = null;
@@ -23,15 +25,10 @@ document.getElementById("analyze").addEventListener("click", async () => {
       scoreEl.textContent = score;
       scoreEl.className = score > 80 ? "good" : score > 50 ? "medium" : "bad";
 
-      const list = document.getElementById("cookieList");
-      list.innerHTML = cookies
-        .map((c) => `<li>${c.name} (${c.secure ? "Secure" : "Insecure"})</li>`)
-        .join("");
-
       chrome.storage.local.set({ latestScore: score });
     },
   );
-});
+}
 
 document.getElementById("openTab").addEventListener("click", () => {
   chrome.tabs.create({ url: chrome.runtime.getURL("src/dashboard.html") });

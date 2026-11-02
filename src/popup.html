@@ -1,14 +1,21 @@
 <!doctype html>
 <html>
   <head>
+    <script>
+      document.getElementById("openTab").href =
+        chrome.runtime.getURL("src/dashboard.html");
+    </script>
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <h2>Privacy Scores</h2>
-    <div id="score">Loading...</div>
-    <button id="analyze">Analyze Cookies</button>
-    <button id="openTab">Open Dashboard</button>
-    <ul id="cookieList"></ul>
+    <div class="privacy_statement">
+      <h2 class="align_text_center">Privacy Score:</h2>
+      <div id="score" class="align_text_center">100</div>
+    </div>
+
     <script src="popup.js"></script>
+    <footer class="footer">
+      <a href="src/dashboard.html" id="openTab" class="bad">Dashboard</a>
+    </footer>
   </body>
 </html>

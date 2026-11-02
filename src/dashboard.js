@@ -35,24 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (result.latestScore !== undefined) {
       updateCircularScore(result.latestScore);
       updateScoreText(result.latestScore);
-      console.log("Updating Score to " + result.latestScore);
     }
-    console.log("Result: ", JSON.stringify(result));
   });
-
-  // if (latestScore) {
-  //   updateCircularScore(latestScore);
-  //   updateScoreText(latestScore);
-  //   console.log("Updating score");
-  // }
-
-  // const btn = document.getElementById("toggleThemeBtn");
-  // btn.addEventListener("click", () => {
-  //   const isDark = document.documentElement.classList.toggle("dark");
-  //   localStorage.theme = isDark ? "dark" : "light";
-  // });
-
-  // toggleLightDarkTheme();
-
-  console.log("DOM fully loaded");
 });

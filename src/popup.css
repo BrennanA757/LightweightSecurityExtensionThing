@@ -1,11 +1,38 @@
+html {
+  margin: 0;
+  padding: 0;
+}
 body {
   font-family: Arial;
   width: 250px;
-  padding: 10px;
+  padding: 0px;
+  margin: 0px;
+  background-color: #3a3a3a;
+  color: white;
+  border: 3px solid black;
 }
-#score {
-  font-size: 24px;
-  margin-bottom: 10px;
+.privacy_statement {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 5px 0px;
+  background-color: #272727;
+  border-top: 1px solid white;
+  box-sizing: border-box;
+}
+.footer a {
+  display: block;
+}
+.align_text_center {
+  text-align: center;
+}
+.float_right {
+  float: right;
 }
 .good {
   color: green;
@@ -15,4 +42,10 @@ body {
 }
 .bad {
   color: red;
+}
+#score {
+  font-size: 24px;
+  margin-left: 10px;
+  background-color: #000000;
+  padding: 5px;
 }
