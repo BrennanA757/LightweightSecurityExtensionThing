@@ -49,22 +49,20 @@ h2 {
   font-weight: bold;
   height: 5vh;
   width: 10vw;
-  border-radius: 3px;
-  margin: 1vh;
   font-size: 1.5rem;
-  background-color: #353535;
 }
 
 .container div.display-area {
   grid-area: display-area;
 }
 
-#toggle-theme-btn {
-  background-color: #2b2d36;
-  border-color: #3f3f3f;
-  border-width: 0.2rem;
-  padding: 0.1rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
+.menu_button_ {
+  background-color: #5a5a5a;
   cursor: pointer;
+
+  transition: background-color 0.3s ease;
+}
+
+.menu_button_:hover {
+  background-color: #464646;
 }

@@ -5,22 +5,23 @@
   padding: 0;
   width: 10em;
   height: 10em;
-  background-color: #f2e9e1;
+  background-color: #c4f5f5;
   border-radius: 50%;
   line-height: 10em;
+  border: 3px solid black;
 }
 
 .progress-circle:after {
   border: none;
   position: absolute;
-  top: 0.35em;
-  left: 0.35em;
+  top: 0.2em;
+  left: 0.2em;
   text-align: center;
   display: block;
   border-radius: 50%;
   width: 9.3em;
   height: 9.3em;
-  background-color: #aca281;
+  background-color: #3e8b8b;
   content: " ";
 }
 /* Text inside the control */

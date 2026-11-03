@@ -38,3 +38,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
+
+document.getElementById("home_menu_btn").addEventListener("click", () => {
+  console.log("Home btn clicked.");
+});
+
+document.getElementById("analytics_btn").addEventListener("click", () => {
+  console.log("Analytics btn clicked.");
+});
