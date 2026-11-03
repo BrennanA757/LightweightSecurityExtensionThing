@@ -66,3 +66,16 @@ h2 {
 .menu_button_:hover {
   background-color: #464646;
 }
+
+.good {
+  border-color: green !important;
+  background-color: green !important;
+}
+.medium {
+  border-color: orange !important;
+  background-color: orange !important;
+}
+.bad {
+  border-color: red !important;
+  background-color: red !important;
+}

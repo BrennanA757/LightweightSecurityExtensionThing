@@ -5,6 +5,31 @@ function updateCircularScore(score) {
     return;
   }
   circle.classList.add("p" + score);
+
+  const value_bar = document.getElementById("value-bar");
+  const first50_bar = document.getElementById("first50-bar");
+  if (first50_bar == null) console.log("Cannot find first50 bar.");
+  if (value_bar == null) {
+    console.log("Cannot find value bar.");
+  } else {
+    if (score > 50) {
+      circle.classList.add("over50");
+    }
+
+    let color = "";
+    if (score > 70) {
+      color = "good";
+    } else if (score > 40) {
+      color = "medium";
+    } else {
+      color = "bad";
+    }
+    value_bar.classList.remove("good", "medium", "bad");
+    first50_bar.classList.remove("good", "medium", "bad");
+    value_bar.classList.add(color);
+    first50_bar.classList.add(color);
+  }
+
   console.log("Updating circle fill amount to " + score);
 }
 

@@ -5,17 +5,16 @@
   padding: 0;
   width: 10em;
   height: 10em;
-  background-color: #c4f5f5;
+  background-color: #090c0c;
   border-radius: 50%;
   line-height: 10em;
-  border: 3px solid black;
 }
 
 .progress-circle:after {
   border: none;
   position: absolute;
-  top: 0.2em;
-  left: 0.2em;
+  top: 0.35em;
+  left: 0.35em;
   text-align: center;
   display: block;
   border-radius: 50%;
@@ -55,7 +54,7 @@
   width: 10em;
   height: 10em;
   border-radius: 100%;
-  border: 5em solid #1baa1b; /*The border is 0.35 but making it larger removes visual artifacts */
+  border: 5em solid green; /*The border is 0.35 but making it larger removes visual artifacts */
   /*background-color: #4D642D;*/ /* for debug */
   box-sizing: border-box;
 }
@@ -64,7 +63,7 @@
   /*Progress bar for the first 50%, filling the whole right half*/
   position: absolute; /*needed for clipping*/
   clip: rect(0, 10em, 10em, 5em);
-  background-color: #1baa1b;
+  background-color: green;
   border-radius: 100%;
   width: 10em;
   height: 10em;
