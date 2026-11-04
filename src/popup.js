@@ -14,7 +14,6 @@ async function runAnalysis() {
     (cookies) => {
       if (!cookies || !Array.isArray(cookies)) {
         document.getElementById("score").textContent = "N/A";
-        console.log("No cookies found.");
         return;
       }
 

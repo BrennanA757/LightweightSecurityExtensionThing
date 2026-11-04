@@ -108,3 +108,8 @@ h3 {
   height: 95vh;
   overflow: auto;
 }
+
+#score_circle_display_area {
+  display: flex;
+  flex-direction: column;
+}

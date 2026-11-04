@@ -29,8 +29,6 @@ function updateCircularScore(score) {
     value_bar.classList.add(color);
     first50_bar.classList.add(color);
   }
-
-  console.log("Updating circle fill amount to " + score);
 }
 
 function updateScoreText(score) {
@@ -39,8 +37,7 @@ function updateScoreText(score) {
     console.log("Cannot find score text.");
     return;
   }
-  text.innerHTML = (score + "%").toString();
-  console.log("Updating score text to " + score);
+  text.innerHTML = ("Score: " + score + "%").toString();
 }
 
 function toggleLightDarkTheme() {
