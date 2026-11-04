@@ -55,6 +55,35 @@ function toggleLightDarkTheme() {
   }
 }
 
+function listCookies() {
+  chrome.storage.local.get(
+    ["cross_site_cookies", "insecure_cookies"],
+    (result) => {
+      if (result.cross_site_cookies !== undefined) {
+        updateCookieList(result.cross_site_cookies);
+      }
+      if (result.insecure_cookies !== undefined) {
+        updateCookieList(result.insecure_cookies);
+      }
+    },
+  );
+}
+
+function updateCookieList(cookie_list) {
+  cookie_container = document.getElementById("cookie_container");
+
+  for (c in cookie_list) {
+    //Create identifying string
+    const cookie_string =
+      cookie_list[c].name + " from " + cookie_list[c].domain + "\n";
+
+    //Create and append new p element to the cookie container.
+    let p_element = document.createElement("p");
+    p_element.innerHTML = cookie_string;
+    cookie_container.appendChild(p_element);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   chrome.storage.local.get("latestScore", (result) => {
     if (result.latestScore !== undefined) {
@@ -62,6 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       updateScoreText(result.latestScore);
     }
   });
+  listCookies();
 });
 
 document.getElementById("home_menu_btn").addEventListener("click", () => {

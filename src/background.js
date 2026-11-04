@@ -14,6 +14,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         secure: c.secure,
         httpOnly: c.httpOnly,
         sameSite: c.sameSite,
+        domain: c.domain,
       }));
       sendResponse(analysis);
     });

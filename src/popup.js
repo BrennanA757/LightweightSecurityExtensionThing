@@ -18,14 +18,21 @@ async function runAnalysis() {
         return;
       }
 
-      let insecure = cookies.filter((c) => !c.secure || !c.httpOnly).length;
+      const cross_site_cookies = cookies.filter((c) => !c.sameSite);
+      const insecure_cookies = cookies.filter((c) => !c.secure || !c.httpOnly);
+
+      let insecure = cross_site_cookies.length + insecure_cookies.length;
       let score = Math.max(0, 100 - insecure * 10);
 
       const scoreEl = document.getElementById("score");
       scoreEl.textContent = score;
       scoreEl.className = score > 80 ? "good" : score > 50 ? "medium" : "bad";
 
-      chrome.storage.local.set({ latestScore: score });
+      chrome.storage.local.set({
+        latestScore: score,
+        cross_site_cookies: cross_site_cookies,
+        insecure_cookies: insecure_cookies,
+      });
     },
   );
 }
