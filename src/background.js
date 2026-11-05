@@ -22,6 +22,7 @@ let whitelisted_sites_regexes = [
 
 chrome.storage.local.set({
   whitelisted_sites: whitelisted_sites,
+  whitelisted_sites_regexes: whitelisted_sites_regexes,
 });
 
 function isSecure(cookie) {
