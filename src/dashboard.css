@@ -101,15 +101,68 @@ h3 {
   background-color: red !important;
 }
 
+.flex_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.whitelist_header {
+  margin-right: 1rem;
+  font-size: 15px;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 #cookie_container {
   width: 45rem;
   border-right: 1px solid black;
   border-left: 1px solid black;
-  height: 95vh;
+  border-bottom: 1px solid black;
+  height: 50vh;
   overflow: auto;
 }
 
 #score_circle_display_area {
   display: flex;
   flex-direction: column;
+}
+
+#whitelist_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+#domain_input {
+  height: 7vh;
+  width: 37rem;
+  background-color: lightgrey;
+  border: 3px solid black;
+  border-radius: 1rem;
+  margin-top: 1rem;
+}
+
+#submit_btn {
+  background-color: rgb(8, 101, 163);
+  border: 1px solid black;
+  border-radius: 1rem;
+  cursor: pointer;
+  width: 80px;
+  height: 40px;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+#whitelist_list {
+  width: 45rem;
+  max-height: 15rem;
+  overflow: auto;
+  background-color: #363636;
+}
+
+#whitelist_list p {
+  font-size: 14px;
+  font-weight: bold;
 }

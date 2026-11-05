@@ -22,8 +22,25 @@
             <div class="value-bar" id="value-bar"></div>
           </div>
         </div>
-        <div id="cookie_container">
-          <h3>Detected Cookies</h3>
+        <div id="cookie_section">
+          <div id="cookie_container">
+            <h3>Detected Cookies</h3>
+          </div>
+          <div>
+            <form id="whitelist_form">
+              <h4 class="whitelist_header">Whitelisted sites</h4>
+              <div id="whitelist_list"></div>
+              <div class="flex_row">
+                <h4 class="whitelist_header">Add Site:</h4>
+                <input
+                  id="domain_input"
+                  type="text"
+                  value="whitelistexample.com"
+                />
+              </div>
+              <button type="submit" id="submit_btn">Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     </body>

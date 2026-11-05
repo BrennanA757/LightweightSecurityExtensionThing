@@ -81,14 +81,36 @@ function updateCookieList(cookie_list) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+function updateWhitelistedDomains(whitelisted_sites) {
+  whitelist_container = document.getElementById("whitelist_list");
+
+  for (const i in whitelisted_sites) {
+    let p_element = document.createElement("p");
+    p_element.innerHTML = whitelisted_sites[i];
+    whitelist_container.appendChild(p_element);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
   chrome.storage.local.get("latestScore", (result) => {
+    //Update score circle
     if (result.latestScore !== undefined) {
       updateCircularScore(result.latestScore);
       updateScoreText(result.latestScore);
     }
   });
+
+  //Update detected cookies list
   listCookies();
+
+  //Update whitelisted sites list
+  try {
+    chrome.storage.local.get("whitelisted_sites", (result) => {
+      updateWhitelistedDomains(result.whitelisted_sites);
+    });
+  } catch (e) {
+    console.log("Unable to find whitelisted domain dictionary: " + e);
+  }
 });
 
 document.getElementById("home_menu_btn").addEventListener("click", () => {
