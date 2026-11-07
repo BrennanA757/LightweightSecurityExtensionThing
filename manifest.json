@@ -4,7 +4,14 @@
   "version": "1.0",
   "description": "Blocks trackers, analyzes cookies, and shows a privacy score.",
 
-  "permissions": ["cookies", "storage", "activeTab", "declarativeNetRequest"],
+  "permissions": [
+    "cookies",
+    "storage",
+    "activeTab",
+    "declarativeNetRequest",
+    "webNavigation",
+    "tabs"
+  ],
 
   "host_permissions": ["https://*/*"],
 

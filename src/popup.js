@@ -1,40 +1,14 @@
-window.addEventListener("load", runAnalysis);
-
-async function runAnalysis() {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  let domain = null;
-  try {
-    domain = new URL(tab.url).hostname;
-  } catch (e) {
-    console.log("Invalid tab URL: ", tab.url);
+window.addEventListener("load", async () => {
+  const { latestScore } = await chrome.storage.local.get("latestScore");
+  const scoreEl = document.getElementById("score");
+  if (latestScore !== undefined) {
+    scoreEl.textContent = latestScore;
+    scoreEl.className =
+      latestScore > 80 ? "good" : latestScore > 50 ? "medium" : "bad";
+  } else {
+    scoreEl.textContent = "100%";
   }
-  chrome.runtime.sendMessage(
-    { action: "analyzeCookies", url: tab.url, domain },
-    (cookies) => {
-      if (!cookies || !Array.isArray(cookies)) {
-        document.getElementById("score").textContent = "N/A";
-        return;
-      }
-
-      const cross_site_cookies = cookies.filter((c) => !c.sameSite);
-      const insecure_cookies = cookies.filter((c) => !c.secure || !c.httpOnly);
-
-      let insecure = cross_site_cookies.length + insecure_cookies.length;
-      let score = Math.max(0, 100 - insecure * 10);
-
-      const scoreEl = document.getElementById("score");
-      scoreEl.textContent = score;
-      scoreEl.className = score > 80 ? "good" : score > 50 ? "medium" : "bad";
-
-      chrome.storage.local.set({
-        latestScore: score,
-        cross_site_cookies: cross_site_cookies,
-        insecure_cookies: insecure_cookies,
-      });
-    },
-  );
-}
+});
 
 document.getElementById("openTab").addEventListener("click", () => {
   chrome.tabs.create({ url: chrome.runtime.getURL("./src/dashboard.html") });

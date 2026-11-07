@@ -1,3 +1,5 @@
+console.log("background loaded");
+
 const trackerList = [
   "*://*.doubleclick.net/*",
   "*://*.facebook.com/*",
@@ -25,19 +27,11 @@ chrome.storage.local.set({
   whitelisted_sites_regexes: whitelisted_sites_regexes,
 });
 
-function isSecure(cookie) {
-  if (!cookie.isSecure || !cookie.httpOnly || !cookie.sameSite) {
-    return false;
-  }
-  return true;
-}
+chrome.webNavigation.onCompleted.addListener((details) => {
+  runAnalysis();
+});
 
-async function getCookies() {
-  const cookies = await chrome.cookies.getAll({});
-  return cookies;
-}
-
-async function removeInSecureCookies(cookies) {
+async function removeInsecureCookies(cookies) {
   //Remove insecure cookies
   for (const cookie of cookies) {
     if (!isSecure(cookie)) {
@@ -50,7 +44,6 @@ async function removeInSecureCookies(cookies) {
       }
 
       if (has_domain) {
-        //console.log("Skipping over " + cookie.name + " from " + cookie.domain);
         continue;
       }
 
@@ -66,33 +59,70 @@ async function removeInSecureCookies(cookies) {
   }
 }
 
-async function manageCookies(sendResponse) {
+async function runAnalysis() {
+  const [tab] = await chrome.tabs.query({});
+
+  console.log(tab);
+  let domain = null;
+  try {
+    domain = new URL(tab.url).hostname;
+  } catch (e) {
+    console.log(tabID);
+  }
+
   const cookies = await getCookies();
-  const analysis = cookies.map((c) => ({
-    name: c.name,
-    secure: c.secure,
-    httpOnly: c.httpOnly,
-    sameSite: c.sameSite,
-    domain: c.domain,
-    url: c.url,
-  }));
+  await removeInsecureCookies(cookies);
 
-  sendResponse(analysis);
+  if (!cookies || !Array.isArray(cookies)) {
+    document.getElementById("score").textContent = "N/A";
+    return;
+  }
 
-  await removeInSecureCookies(cookies);
+  const cross_site_cookies = cookies.filter((c) => !c.sameSite);
+  const insecure_cookies = cookies.filter((c) => !c.secure || !c.httpOnly);
+
+  let insecure = cross_site_cookies.length + insecure_cookies.length;
+  let score = Math.max(0, 100 - insecure * 10);
+
+  chrome.storage.local.set({
+    latestScore: score,
+    cross_site_cookies: cross_site_cookies,
+    insecure_cookies: insecure_cookies,
+  });
 }
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.action === "analyzeCookies") {
-    //Analyze all cookies and filter insecure ones
-    manageCookies(sendResponse);
-    return true; //keep channel open for async response
+function isSecure(cookie) {
+  if (!cookie.isSecure || !cookie.httpOnly || !cookie.sameSite) {
+    return false;
   }
-});
+  return true;
+}
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.action === "addWhitelistedDomain") {
-    console.log("Adding " + sender.domain);
-    whitelisted_domain_regexes[sender.domain] = ""; //Add regex converter
-  }
-});
+async function getCookies() {
+  const cookies = await chrome.cookies.getAll({});
+  return cookies;
+}
+
+// async function manageCookies(sendResponse) {
+//   const cookies = await getCookies();
+//   const analysis = cookies.map((c) => ({
+//     name: c.name,
+//     secure: c.secure,
+//     httpOnly: c.httpOnly,
+//     sameSite: c.sameSite,
+//     domain: c.domain,
+//     url: c.url,
+//   }));
+
+//   sendResponse(analysis);
+
+//   await removeInSecureCookies(cookies);
+// }
+
+// chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+//   if (msg.action === "analyzeCookies") {
+//     //Analyze all cookies and filter insecure ones
+//     manageCookies(sendResponse);
+//     return true; //keep channel open for async response
+//   }
+// });
