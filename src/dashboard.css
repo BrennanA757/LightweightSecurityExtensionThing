@@ -178,5 +178,6 @@ h3 {
 
 #insecure_cookies_chart {
   width: 100%;
-  max-width: 700px;
+  max-width: 1000px;
+  background-color: white;
 }

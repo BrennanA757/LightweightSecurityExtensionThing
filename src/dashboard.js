@@ -160,4 +160,54 @@ form.addEventListener("submit", async function (event) {
   updateWhitelistedDomains(result.whitelisted_sites);
 });
 
-//TODO: implement removal and editing of whitelisted sites or implement analyze page
+//Debugging code
+const xValues = [50, 60, 70, 80, 90, 100];
+const yValues = [8, 9, 10, 9, 9, 8, 7];
+
+const chart = document.getElementById("insecure_cookies_chart");
+const insecure_cookies_chart = new Chart(chart, {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [
+      {
+        backgroundColor: "rgba(0,0,255,1.0)",
+        borderColor: "rgbs(0,0,255,1.0)",
+        data: yValues,
+      },
+    ],
+  },
+  options: {
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "Insecure Cookies over time",
+        font: { size: 16 },
+        color: "black",
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: "black",
+        },
+        title: {
+          display: true,
+          text: "Date",
+          color: "black",
+        },
+      },
+      y: {
+        ticks: {
+          color: "black",
+        },
+        title: {
+          display: true,
+          text: "# of Cookies",
+          color: "black",
+        },
+      },
+    },
+  },
+});
