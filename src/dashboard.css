@@ -114,6 +114,15 @@ h3 {
   font-weight: bold;
 }
 
+.view {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.view.active {
+  max-height: 100vw;
+}
+
 #cookie_container {
   width: 45rem;
   border-right: 1px solid black;
@@ -165,4 +174,9 @@ h3 {
 #whitelist_list p {
   font-size: 14px;
   font-weight: bold;
+}
+
+#insecure_cookies_chart {
+  width: 100%;
+  max-width: 700px;
 }

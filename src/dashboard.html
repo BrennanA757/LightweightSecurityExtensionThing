@@ -6,6 +6,7 @@
     rel="stylesheet"
     href="../static/purecss-circular-progress-bar-master/css-circular-prog-bar.css"
   />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
   <div class="container">
     <div class="header"><h2 class="font-bold">Dashboard</h2></div>
     <body>
@@ -14,7 +15,7 @@
         <button id="analytics_btn" class="menu_button_">Analytics</button>
         <button id="toggleThemeBtn" class="menu_button_">Toggle Theme</button>
       </div>
-      <div class="display-area">
+      <div class="display-area view active" id="home_view">
         <div class="progress-circle" id="score-circle">
           <span id="scoreText">Score: 100%</span>
           <div class="left-half-clipper" id="left-half-clipper">
@@ -43,6 +44,10 @@
             </form>
           </div>
         </div>
+      </div>
+      <div class="view container display-area" id="analytics_view">
+        <h2>Insecure Cookies</h2>
+        <canvas id="insecure_cookies_chart"></canvas>
       </div>
     </body>
   </div>

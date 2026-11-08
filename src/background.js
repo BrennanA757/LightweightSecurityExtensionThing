@@ -1,5 +1,3 @@
-console.log("background loaded");
-
 const trackerList = [
   "*://*.doubleclick.net/*",
   "*://*.facebook.com/*",

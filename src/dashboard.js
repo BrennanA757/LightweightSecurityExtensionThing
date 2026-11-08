@@ -122,11 +122,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("home_menu_btn").addEventListener("click", () => {
-  console.log("Home btn clicked.");
+  const views = document.querySelectorAll(".view");
+  views.forEach((v) => v.classList.remove("active"));
+  document.getElementById("home_view").classList.toggle("active");
 });
 
 document.getElementById("analytics_btn").addEventListener("click", () => {
-  console.log("Analytics btn clicked.");
+  const views = document.querySelectorAll(".view");
+  views.forEach((v) => v.classList.remove("active"));
+  document.getElementById("analytics_view").classList.toggle("active");
 });
 
 const form = document.querySelector("#whitelist_form");
