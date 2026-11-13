@@ -1,3 +1,70 @@
+document.addEventListener("DOMContentLoaded", async () => {
+  chrome.storage.local.get("latestScore", (result) => {
+    //Update score circle
+    if (result.latestScore !== undefined) {
+      updateCircularScore(result.latestScore);
+      updateScoreText(result.latestScore);
+    }
+  });
+
+  //Update detected cookies list
+  listCookies();
+
+  //Update whitelisted sites list
+  try {
+    chrome.storage.local.get("whitelisted_sites", (result) => {
+      updateWhitelistedDomains(result.whitelisted_sites);
+    });
+  } catch (e) {
+    console.log("Unable to find whitelisted domain dictionary: " + e);
+  }
+
+  //Update foundCookies Dictionary
+  await updateFoundCookiesByDates();
+
+  //Update graph in analytics section
+  await updateGraph();
+});
+
+async function updateFoundCookiesByDates() {
+  try {
+    await chrome.storage.local.get(
+      ["found_cookies", "insecure_cookies"],
+      async (result) => {
+        //If found_cookies has not been set, create it
+        // if (result.found_cookies == undefined) {
+        //   chrome.storage.local.set({
+        //     found_cookies: {},
+        //   });
+        //   result.found_cookies = {};
+        // }
+
+        chrome.storage.local.set({
+          found_cookies: {},
+        });
+        result.found_cookies = {};
+
+        today = new Date();
+        if (!result.found_cookies.hasOwnProperty(today)) {
+          result.found_cookies[today] = [];
+        }
+
+        result.insecure_cookies.forEach((cookie) => {
+          if (!result.found_cookies[today].includes(cookie.name)) {
+            result.found_cookies[today].push(cookie.name);
+          }
+        });
+
+        chrome.storage.local.set({
+          found_cookies: result.found_cookies,
+        });
+      },
+    );
+  } catch (e) {
+    console.log("Unable to update foundCookies dictionary: " + e);
+  }
+}
+
 function updateCircularScore(score) {
   const circle = document.getElementById("score-circle");
   if (circle == null) {
@@ -99,27 +166,70 @@ function updateWhitelistedDomains(whitelisted_sites) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  chrome.storage.local.get("latestScore", (result) => {
-    //Update score circle
-    if (result.latestScore !== undefined) {
-      updateCircularScore(result.latestScore);
-      updateScoreText(result.latestScore);
-    }
-  });
+async function updateGraph() {
+  const { found_cookies } = await chrome.storage.local.get("found_cookies");
+  const keys = Object.keys(found_cookies);
 
-  //Update detected cookies list
-  listCookies();
+  let xValues = [];
+  let yValues = [];
 
-  //Update whitelisted sites list
-  try {
-    chrome.storage.local.get("whitelisted_sites", (result) => {
-      updateWhitelistedDomains(result.whitelisted_sites);
-    });
-  } catch (e) {
-    console.log("Unable to find whitelisted domain dictionary: " + e);
+  for (let i = 0; i < 10 && i < keys.length; i++) {
+    const date = new Date(keys[i]);
+    console.log("Getting cookies for " + date);
+    const date_string = date.getMonth() + 1 + "/" + date.getDate();
+
+    xValues.push(date_string);
+    yValues.push(found_cookies[keys[i]].length);
   }
-});
+
+  const chart = document.getElementById("insecure_cookies_chart");
+  const insecure_cookies_chart = new Chart(chart, {
+    type: "line",
+    data: {
+      labels: xValues,
+      datasets: [
+        {
+          backgroundColor: "rgba(0,0,255,1.0)",
+          borderColor: "rgbs(0,0,255,1.0)",
+          data: yValues,
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Insecure Cookies over time",
+          font: { size: 16 },
+          color: "black",
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: "black",
+          },
+          title: {
+            display: true,
+            text: "Date",
+            color: "black",
+          },
+        },
+        y: {
+          ticks: {
+            color: "black",
+          },
+          title: {
+            display: true,
+            text: "# of Cookies",
+            color: "black",
+          },
+        },
+      },
+    },
+  });
+}
 
 document.getElementById("home_menu_btn").addEventListener("click", () => {
   const views = document.querySelectorAll(".view");
@@ -158,56 +268,4 @@ form.addEventListener("submit", async function (event) {
   });
 
   updateWhitelistedDomains(result.whitelisted_sites);
-});
-
-//Debugging code
-const xValues = [50, 60, 70, 80, 90, 100];
-const yValues = [8, 9, 10, 9, 9, 8, 7];
-
-const chart = document.getElementById("insecure_cookies_chart");
-const insecure_cookies_chart = new Chart(chart, {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [
-      {
-        backgroundColor: "rgba(0,0,255,1.0)",
-        borderColor: "rgbs(0,0,255,1.0)",
-        data: yValues,
-      },
-    ],
-  },
-  options: {
-    plugins: {
-      legend: { display: false },
-      title: {
-        display: true,
-        text: "Insecure Cookies over time",
-        font: { size: 16 },
-        color: "black",
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: "black",
-        },
-        title: {
-          display: true,
-          text: "Date",
-          color: "black",
-        },
-      },
-      y: {
-        ticks: {
-          color: "black",
-        },
-        title: {
-          display: true,
-          text: "# of Cookies",
-          color: "black",
-        },
-      },
-    },
-  },
 });
