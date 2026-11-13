@@ -66,9 +66,9 @@ h3 {
 
 .container div.menu button {
   font-weight: bold;
-  height: 5vh;
+  min-height: 5vh;
   width: 10vw;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 1.5cqi, 12rem);
 }
 
 .container div.display-area {
@@ -112,6 +112,7 @@ h3 {
   font-size: 15px;
   text-decoration: underline;
   font-weight: bold;
+  min-width: 5rem;
 }
 
 .view {
@@ -124,7 +125,7 @@ h3 {
 }
 
 #cookie_container {
-  width: 45rem;
+  width: 36.25vw;
   border-right: 1px solid black;
   border-left: 1px solid black;
   border-bottom: 1px solid black;
@@ -132,9 +133,8 @@ h3 {
   overflow: auto;
 }
 
-#score_circle_display_area {
-  display: flex;
-  flex-direction: column;
+#score-circle {
+  min-width: 200px;
 }
 
 #whitelist_form {
@@ -142,6 +142,7 @@ h3 {
   flex-direction: column;
   align-items: center;
   margin-top: 1rem;
+  max-width: 36.25vw;
 }
 
 #domain_input {
@@ -165,7 +166,7 @@ h3 {
 }
 
 #whitelist_list {
-  width: 45rem;
+  width: 36.75vw;
   max-height: 15rem;
   overflow: auto;
   background-color: #363636;
@@ -177,7 +178,7 @@ h3 {
 }
 
 #insecure_cookies_chart {
-  width: 100%;
+  width: 20vw;
   max-width: 1000px;
   background-color: white;
 }

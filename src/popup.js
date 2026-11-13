@@ -11,5 +11,5 @@ window.addEventListener("load", async () => {
 });
 
 document.getElementById("openTab").addEventListener("click", () => {
-  chrome.tabs.create({ url: chrome.runtime.getURL("./src/dashboard.html") });
+  chrome.tabs.create({ url: chrome.runtime.getURL("./src/dashboard/dashboard.html") });
 });
