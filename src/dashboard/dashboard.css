@@ -152,12 +152,12 @@ h3 {
   flex-direction: column;
   align-items: center;
   margin-top: 1rem;
-  max-width: 36.25vw;
+  max-width: 28vw;
 }
 
 #domain_input {
   height: 7vh;
-  width: 37rem;
+  width: 25rem;
   background-color: lightgrey;
   border: 3px solid black;
   border-radius: 1rem;
@@ -177,9 +177,10 @@ h3 {
 
 #whitelist_list {
   width: 36.75vw;
-  max-height: 15rem;
+  max-height: 12rem;
   overflow: auto;
-  background-color: #363636;
+  background-color: white;
+  border: 3px solid black;
 }
 
 #whitelist_list p {

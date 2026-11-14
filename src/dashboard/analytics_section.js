@@ -4,8 +4,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function updateGraph() {
+  let keys;
   const { found_cookies } = await chrome.storage.local.get("found_cookies");
-  const keys = Object.keys(found_cookies);
+  if(found_cookies != undefined){
+    keys = Object.keys(found_cookies);
+  }
+  else{
+    keys=[];
+  }
 
   let xValues = [];
   let yValues = [];
