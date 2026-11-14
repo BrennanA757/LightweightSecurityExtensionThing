@@ -6,15 +6,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       updateScoreText(result.latestScore);
     }
   });
-
-  //Update whitelisted sites list
-  try {
-    chrome.storage.local.get("whitelisted_sites", (result) => {
-      updateWhitelistedDomains(result.whitelisted_sites);
-    });
-  } catch (e) {
-    console.log("Unable to find whitelisted domain dictionary: " + e);
-  }
 });
 
 function updateCircularScore(score) {

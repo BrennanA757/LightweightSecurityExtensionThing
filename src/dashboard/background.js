@@ -59,8 +59,7 @@ async function removeInsecureCookies(cookies) {
 
 async function runAnalysis() {
   const [tab] = await chrome.tabs.query({});
-
-  console.log(tab);
+  
   let domain = null;
   try {
     domain = new URL(tab.url).hostname;

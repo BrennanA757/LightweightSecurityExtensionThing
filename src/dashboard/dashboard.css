@@ -124,6 +124,16 @@ h3 {
   max-height: 100vw;
 }
 
+.editIcon{
+  opacity: 0;
+  transition: 1 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.whitelist_row:hover .editIcon {
+  opacity: 1;
+}
+
 #cookie_container {
   width: 36.25vw;
   border-right: 1px solid black;
