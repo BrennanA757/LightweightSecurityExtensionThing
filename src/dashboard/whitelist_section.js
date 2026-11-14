@@ -56,6 +56,8 @@ function createWhitelistElement(name){
   div.appendChild(p_element);
   div.appendChild(edit_btn);
   return div;
+
+  //TODO: Fix bug with whitelists showing numbers instead of names and finish update logic.
 }
 
 function createInputField(name){

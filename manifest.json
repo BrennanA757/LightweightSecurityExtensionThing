@@ -16,7 +16,7 @@
   "host_permissions": ["https://*/*"],
 
   "background": {
-    "service_worker": "src/background.js"
+    "service_worker": "src/dashboard/background.js"
   },
 
   "action": {
@@ -41,9 +41,11 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "src/dashboard.html",
-        "src/dashboard.js",
-        "src/dashboard.css"
+        "src/dashboard/dashboard.html",
+        "src/dashboard/dashboard.js",
+        "src/dashboard/analytics_section.js",
+        "src/dashboard/cookies_section.js",
+        "src/dashboard/dashboard.css"
       ],
       "matches": ["<all_urls>"]
     }
