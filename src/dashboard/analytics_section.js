@@ -18,7 +18,6 @@ async function updateGraph() {
 
   for (let i = 0; i < 10 && i < keys.length; i++) {
     const date = new Date(keys[i]);
-    console.log("Getting cookies for " + date);
     const date_string = date.getMonth() + 1 + "/" + date.getDate();
 
     xValues.push(date_string);

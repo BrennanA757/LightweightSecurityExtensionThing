@@ -16,7 +16,7 @@
   "host_permissions": ["https://*/*"],
 
   "background": {
-    "service_worker": "src/dashboard/background.js"
+    "service_worker": "src/background.js"
   },
 
   "action": {

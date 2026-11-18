@@ -1,79 +1,43 @@
 document.addEventListener("DOMContentLoaded", async () => {
   //Update detected cookies list
-  listCookies();
+  await listCookies();
 
   //Update foundCookies Dictionary
   await updateFoundCookiesByDates();
 });
 
-async function updateFoundCookiesByDates() {
-  try {
-    await chrome.storage.local.get(
-      ["found_cookies", "insecure_cookies"],
-      async (result) => {
-        //If found_cookies has not been set, create it
-        // if (result.found_cookies == undefined) {
-        //   chrome.storage.local.set({
-        //     found_cookies: {},
-        //   });
-        //   result.found_cookies = {};
-        // }
+async function listCookies() {
+  const response = await chrome.storage.local.get(["cookies", "bad_cookies"]);
 
-        chrome.storage.local.set({
-          found_cookies: {},
-        });
-        result.found_cookies = {};
-
-        today = new Date();
-        if (!result.found_cookies.hasOwnProperty(today)) {
-          result.found_cookies[today] = [];
-        }
-
-        if(result.insecure_cookies == undefined){
-          return;
-        }
-
-        result.insecure_cookies.forEach((cookie) => {
-          if (!result.found_cookies[today].includes(cookie.name)) {
-            result.found_cookies[today].push(cookie.name);
-          }
-        });
-
-        chrome.storage.local.set({
-          found_cookies: result.found_cookies,
-        });
-      },
-    );
-  } catch (e) {
-    console.log("Unable to update foundCookies dictionary: " + e.toString());
+  //Null check
+  if(response.cookies == undefined || response.bad_cookies == undefined){
+    console.log("A list is undefined. Aborting");
+    console.log(response.cookies_list);
+    console.log(response.bad_cookies);
+    return;
   }
+  updateCookieList(response.cookies, response.bad_cookies);
 }
 
-function listCookies() {
-  chrome.storage.local.get(
-    ["cross_site_cookies", "insecure_cookies"],
-    (result) => {
-      if (result.cross_site_cookies !== undefined) {
-        updateCookieList(result.cross_site_cookies);
-      }
-      if (result.insecure_cookies !== undefined) {
-        updateCookieList(result.insecure_cookies);
-      }
-    },
-  );
-}
-
-function updateCookieList(cookie_list) {
+function updateCookieList(cookie_list, bad_cookies_list) {
   cookie_container = document.getElementById("cookie_container");
+  console.log("Bad Cookies List: ", bad_cookies_list);
+  console.log("Cookies List: ", cookie_list);
 
   for (c in cookie_list) {
     //Create identifying string
     const cookie_string =
       cookie_list[c].name + " from " + cookie_list[c].domain + "\n";
 
+    const is_secure = !bad_cookies_list.some((bad_cookie)=>{
+      bad_cookie.name === cookie_list[c];
+    });
+
     //Create and append new p element to the cookie container.
     let p_element = document.createElement("p");
     p_element.innerHTML = cookie_string;
+    if(!is_secure) p_element.style.color="red";
+    else p_element.style.color="black";
     cookie_container.appendChild(p_element);
   }
 }
