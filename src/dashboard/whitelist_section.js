@@ -143,6 +143,11 @@ async function editWhiteLists(){
   await updateWhiteList();
   await updateRegexList();
   
+  //Call and await on analysis
+  await chrome.runtime.sendMessage({
+    action: "runAnalysis",
+  });
+
   edit_index=-1;
   edit_whitelist_name="";
 }
@@ -150,6 +155,11 @@ async function editWhiteLists(){
 async function deleteWhiteListFromLists(){
   await removeWhiteList();
   await updateRegexList();
+
+  //Call and await on analysis
+  await chrome.runtime.sendMessage({
+    action: "runAnalysis",
+  });
 
   edit_index=-1;
   edit_whitelist_name="";
