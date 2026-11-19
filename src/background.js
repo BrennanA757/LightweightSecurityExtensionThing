@@ -25,7 +25,6 @@ chrome.webNavigation.onCompleted.addListener((details) => {
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse)=>{
   if(request.action === "runAnalysis"){
-    console.log("Run Analysis message recieved.");
     await runAnalysis();
   }
   return true;
@@ -77,7 +76,6 @@ async function runAnalysis() {
     const activeTab = tabs[0]
 
     if (activeTab && activeTab.url?.includes(dashboard_url)){
-      console.log("Sending finished analysis message because the dashboard tab is open.");
       chrome.runtime.sendMessage({
         action: "finishedAnalysis"
       });

@@ -1,20 +1,40 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  updateScore();
+});
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
+  if(request.action==="finishedAnalysis"){
+    updateScore();
+  }
+});
+
+function updateScore(){
   chrome.storage.local.get("latestScore", (result) => {
     //Update score circle
     if (result.latestScore !== undefined) {
-      updateCircularScore(result.latestScore);
-      updateScoreText(result.latestScore);
+      updateScoreCircleUI(result.latestScore);
+      updateScoreTextUI(result.latestScore);
     }
   });
-});
+}
 
-function updateCircularScore(score) {
+function updateScoreCircleUI(score) {
   const circle = document.getElementById("score-circle");
   if (circle == null) {
     console.log("Cannot find score circle element.");
     return;
   }
-  circle.classList.add("p" + score);
+
+  //Remove old classes from previous analysis and make new ones
+  const matching_class = "over50";
+  circle.classList.remove(matching_class);
+  const old_p_class=[...circle.classList].filter(cls=>(cls.startsWith("p") && !(cls === "progress-circle")));
+  if(old_p_class.length === 0){
+    circle.classList.add(("p" + score));
+  }
+  else{
+    circle.classList.replace(old_p_class[0], ("p" + score));
+  }
 
   const value_bar = document.getElementById("value-bar");
   const first50_bar = document.getElementById("first50-bar");
@@ -41,7 +61,7 @@ function updateCircularScore(score) {
   }
 }
 
-function updateScoreText(score) {
+function updateScoreTextUI(score) {
   const text = document.getElementById("scoreText");
   if (text == null) {
     console.log("Cannot find score text.");

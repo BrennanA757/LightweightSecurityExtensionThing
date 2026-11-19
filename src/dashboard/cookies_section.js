@@ -31,7 +31,6 @@ function updateCookieList(cookie_list, bad_cookies_list) {
     ".cookie",
   );
   p_elements.forEach((e) => {
-    console.log("Removing cookie: ", e.innerHTML);
     e.remove();
   });
 
