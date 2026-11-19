@@ -24,7 +24,7 @@ function updateCookieList(cookie_list, bad_cookies_list) {
     const cookie_string =
       cookie_list[c].name + " from " + cookie_list[c].domain + "\n";
 
-    const is_secure = !bad_cookies_list.includes(c);
+    const is_secure = bad_cookies_list.some(b=>cookie_list[c].name === b.name);
 
     //Create and append new p element to the cookie container.
     let p_element = document.createElement("p");
