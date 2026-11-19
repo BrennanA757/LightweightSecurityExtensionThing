@@ -68,7 +68,7 @@ async function runAnalysis() {
 
 async function updateFoundCookiesByDates(found_cookies, bad_cookies) {
   //Creates new cookie list for today
-  today = new Date();
+  today = new Date().toDateString();
   if (!found_cookies.hasOwnProperty(today)) {
     found_cookies[today] = [];
   }
