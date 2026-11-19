@@ -3,6 +3,8 @@ const WHITELIST_REGEX_KEY="whitelisted_sites_regexes";
 const FOUND_COOKIES_KEY="found_cookies";
 const BAD_COOKIES_KEY="bad_cookies";
 
+const dashboard_url = "chrome-extension://bakchdppgdekllffihgfcofipjopceaa/src/dashboard/dashboard.html";
+
 let whitelisted_sites = [
   "google.com",
   "fhsu.edu",
@@ -19,6 +21,14 @@ let whitelisted_sites_regexes = [
 
 chrome.webNavigation.onCompleted.addListener((details) => {
   runAnalysis();
+});
+
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse)=>{
+  if(request.action === "runAnalysis"){
+    console.log("Run Analysis message recieved.");
+    await runAnalysis();
+  }
+  return true;
 });
 
 async function runAnalysis() {
@@ -49,8 +59,6 @@ async function runAnalysis() {
 
   const bad_cookies_num = bad_cookies.length;
   const cookies_num = cookies.length;
-  
-  console.log("Cookies num: ", cookies_num, " Bad cookies num: ", bad_cookies_num);
 
   const score = Math.round(((cookies_num - bad_cookies_num) / cookies_num) * 100);
   
@@ -62,6 +70,19 @@ async function runAnalysis() {
 
   await updateFoundCookiesByDates(response.found_cookies, bad_cookies);
   await removeInsecureCookies(cookies, response.whitelisted_sites);
+
+  //Notify of finished analysis
+  
+  chrome.tabs.query({ active: true, currentWindow: true}, (tabs)=>{
+    const activeTab = tabs[0]
+
+    if (activeTab && activeTab.url?.includes(dashboard_url)){
+      console.log("Sending finished analysis message because the dashboard tab is open.");
+      chrome.runtime.sendMessage({
+        action: "finishedAnalysis"
+      });
+    }
+  })
 }
 
 function isSecure(cookie, whitelisted_sites_regexes) {

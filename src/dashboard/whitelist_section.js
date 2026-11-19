@@ -31,7 +31,13 @@ form.addEventListener("submit", async function (event) {
 
   //Update whitelisted sites list UI
   try {
-    chrome.storage.local.get(WHITELIST_KEY, (result) => {
+    //Call and await on analysis
+    await chrome.runtime.sendMessage({
+      action: "runAnalysis",
+    });
+
+    //Update found cookies list
+    await chrome.storage.local.get(WHITELIST_KEY, (result) => {
       renderWhitelistedDomainsUI(result.whitelisted_sites);
     });
   } catch (e) {
@@ -197,7 +203,6 @@ async function removeWhiteList(){
   }
 
   whitelisted_sites = data.whitelisted_sites;
-  console.log("Removing " + edit_index + " from whitelist.");
   whitelisted_sites.splice(edit_index, 1);
 
   await chrome.storage.local.set({
@@ -224,7 +229,6 @@ async function updateRegexList(){
     new_regex_list.push(convertDomainToRegex(whitelist));
   });
 
-  console.log("Updating regex list: " + new_regex_list.toString());
   await chrome.storage.local.set({
     [WHITELIST_REGEX_KEY]: new_regex_list
   });
