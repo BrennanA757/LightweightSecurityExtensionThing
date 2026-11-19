@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse)=>{
   if(request.action === "finishedAnalysis"){
-    console.log("Updating cookies list based on new analysis");
     listCookies();
   }
 });
