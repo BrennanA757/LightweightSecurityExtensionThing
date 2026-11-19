@@ -231,7 +231,7 @@ async function updateRegexList(){
 }
 
 function convertDomainToRegex(domain){
-  const regex_string = "/*." + domain.replace(".", "\\.") + "/";
+  const regex_string = "/.*" + domain.replace(".", "\\.") + "/";
   const regex = new RegExp(regex_string);
   return regex;
 }

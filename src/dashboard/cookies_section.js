@@ -24,12 +24,12 @@ function updateCookieList(cookie_list, bad_cookies_list) {
     const cookie_string =
       cookie_list[c].name + " from " + cookie_list[c].domain + "\n";
 
-    const is_secure = bad_cookies_list.some(b=>cookie_list[c].name === b.name);
+    const is_secure = !bad_cookies_list.some(b=>cookie_list[c].name === b.name);
 
     //Create and append new p element to the cookie container.
     let p_element = document.createElement("p");
     p_element.innerHTML = cookie_string;
-    if(!is_secure) p_element.style.color="red";
+    if(!is_secure) p_element.style.color="#6d0000";
     else p_element.style.color="black";
     cookie_container.appendChild(p_element);
   }
