@@ -19,6 +19,17 @@ let whitelisted_sites_regexes = [
   /.*joinhandshake\.com/,
 ];
 
+//Initialize whitelist dictionaries on first install
+chrome.runtime.onInstalled.addListener((details)=>{
+  if(details.reason === "install"){
+    chrome.storage.local.set({
+      whitelisted_sites: whitelisted_sites,
+      whitelisted_sites_regexes: whitelisted_sites_regexes,
+      found_cookies: {}
+    });
+  }
+});
+
 chrome.webNavigation.onCompleted.addListener((details) => {
   runAnalysis();
 });
@@ -32,19 +43,6 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse)=>{
 
 async function runAnalysis() {
   const response = await chrome.storage.local.get([WHITELIST_KEY, WHITELIST_REGEX_KEY, FOUND_COOKIES_KEY]);
-
-  //Null check
-  if(response.whitelisted_sites == undefined || response.whitelisted_sites_regexes == undefined){
-      await chrome.storage.local.set({
-      whitelisted_sites: whitelisted_sites,
-      whitelisted_sites_regexes: whitelisted_sites_regexes,
-    });
-  }
-  if(response.found_cookies == undefined){
-    await chrome.storage.local.set({
-      found_cookies: {}
-    });
-  }
 
   const cookies = await getCookies();
   
