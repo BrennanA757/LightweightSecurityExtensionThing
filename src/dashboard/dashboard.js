@@ -1,3 +1,5 @@
+const toggle_elements = document.querySelectorAll(".theme_toggle");
+
 document.addEventListener("DOMContentLoaded", async () => {
   updateScore();
 });
@@ -92,4 +94,13 @@ document.getElementById("analytics_btn").addEventListener("click", () => {
   const views = document.querySelectorAll(".view");
   views.forEach((v) => v.classList.remove("active"));
   document.getElementById("analytics_view").classList.toggle("active");
+});
+
+document.getElementById("toggle_theme_btn").addEventListener("click", ()=>{
+  toggle_elements.forEach(e=>{
+    e.classList.toggle("dark-mode");
+  });
+
+  const is_dark = toggle_elements[0].classList.contains('dark-mode');
+  localStorage.setItem('theme', is_dark ? 'dark' : 'light');
 });

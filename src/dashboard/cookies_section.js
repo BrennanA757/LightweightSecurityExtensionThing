@@ -45,8 +45,7 @@ function updateCookieList(cookie_list, bad_cookies_list) {
     let p_element = document.createElement("p");
     p_element.innerHTML = cookie_string;
     p_element.classList.add("cookie");
-    if(!is_secure) p_element.style.color="#6d0000";
-    else p_element.style.color="black";
+    if(!is_secure) p_element.classList.add("warning");
     cookie_container.appendChild(p_element);
   }
 }

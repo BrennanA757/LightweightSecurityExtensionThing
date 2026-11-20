@@ -8,7 +8,6 @@ async function updateGraph() {
   const { found_cookies } = await chrome.storage.local.get("found_cookies");
   if(found_cookies != undefined){
     keys = Object.keys(found_cookies);
-    console.log("Found keys: ", keys);
   }
   else{
     keys=[];
@@ -23,7 +22,6 @@ async function updateGraph() {
   //Push data onto lists
   for (let i = 0; i < 10 && i < keys.length; i++) {
     const date = dates[i];
-    console.log("Placing x value: ", date);
     const date_string = (date.getMonth() + 1) + "/" + date.getDate();
 
     xValues.push(date_string);

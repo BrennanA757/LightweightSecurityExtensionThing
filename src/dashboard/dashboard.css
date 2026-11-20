@@ -1,13 +1,47 @@
-body {
-  background-color: #292929;
+:root{
+  --text-color: #292929;
+  --btn-bg: #dddddd;
+
+  --primary-color: white;
+  --secondary-color: #afafaf;
+  --cookie-container-bg-color: rgb(174, 174, 174);
+  --accent-color: #568ad8;
+  --accent-color-dark: #234d8d;
+  --highlight-color: rgb(8, 101, 163);
+
+  --warning-color: rgb(255, 78, 78);
+}
+.dark-mode{
+  --text-color: white;
+  --btn-bg: #575757;
+
+  --primary-color: rgb(98, 98, 98);
+  --secondary-color: #717171;
+  --cookie-container-bg-color: rgb(77, 77, 77);
+  --accent-color: #33517e;
+  --accent-color-dark: #133b77;
+  --highlight-color: rgb(8, 101, 163);
+
+  --warning-color: red;
+}
+
+
+
+body{
+  color: var(--text-color);
+  background-color: var(--primary-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  
   margin: 0;
 }
-
 a {
-  color: white;
+  color: var(--warning-color);
   text-decoration: underline;
 }
-
+span{
+  color: var(--text-color);
+}
 h1,
 h2,
 h3,
@@ -15,24 +49,20 @@ h4,
 h5,
 h6 {
   text-align: center;
-  color: white;
+  color: var(--text-color);
 }
-
 h2 {
   font-size: 30px;
-  background-color: #2c3a63;
+  background-color: var(--accent-color-dark);
+  color: white;
 }
-
 h3 {
   font-size: 25px;
-  background-color: #33517e;
+  background-color: var(--accent-color);
   padding: 12px;
 }
 
-#cookie_container p {
-  font-size: 15px;
-  font-weight: bold;
-}
+
 
 .score-text {
   position: absolute;
@@ -43,56 +73,52 @@ h3 {
   font-weight: bold;
   color: #333;
 }
-
 .container {
   width: 100%;
   height: 98vh;
   display: grid;
   grid-template-areas:
-    "header header"
-    "menu display-area";
-  background-color: #464646;
+  "header header"
+  "menu display-area";
+  background-color: var(--secondary-color);
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
 }
-
 .container div.header {
   grid-area: header;
 }
-
 .container div.menu {
   grid-area: menu;
-  background-color: #5a5a5a;
+  background-color: var(--primary-color);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
 }
-
 .container div.menu button {
   font-weight: bold;
   min-height: 5vh;
   width: 10vw;
-  font-size: clamp(1rem, 1.5cqi, 12rem);
+  font-size: clamp(1rem, 1.4cqi, 12rem);
 }
-
 .container div.display-area {
   grid-area: display-area;
   display: flex;
   flex-direction: row;
 }
-
 .menu_button_ {
-  background-color: #5a5a5a;
+  background-color: var(--btn-bg);
+  color: var(--text-color);
   cursor: pointer;
+  padding: 5px;
+  white-space: nowrap;
+  
 
   transition: background-color 0.3s ease;
 }
-
 .menu_button_:hover {
   background-color: #464646;
 }
-
 .good {
   border-color: green !important;
   background-color: green !important;
@@ -105,13 +131,11 @@ h3 {
   border-color: red !important;
   background-color: red !important;
 }
-
 .flex_row {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-
 .whitelist_header {
   margin-right: 1rem;
   font-size: 15px;
@@ -119,40 +143,43 @@ h3 {
   font-weight: bold;
   min-width: 5rem;
 }
-
 .view {
   max-height: 0;
   overflow: hidden;
 }
-
 .view.active {
   max-height: 100vw;
 }
-
 .editIcon{
   opacity: 0;
   transition: 1 0.3s ease-in-out;
   cursor: pointer;
 }
-
 .whitelist_row:hover .editIcon {
   opacity: 1;
 }
+.warning{
+  color: var(--warning-color);
+}
 
+
+
+#cookie_container p {
+  font-size: 15px;
+  font-weight: bold;
+}
 #cookie_container {
   width: 36.25vw;
   border-right: 1px solid black;
   border-left: 1px solid black;
   border-bottom: 1px solid black;
-  background-color:rgb(118, 118, 118);
+  background-color: var(--cookie-container-bg-color);
   height: 50vh;
   overflow: auto;
 }
-
 #score-circle {
   min-width: 200px;
 }
-
 #whitelist_form {
   display: flex;
   flex-direction: column;
@@ -160,18 +187,16 @@ h3 {
   margin-top: 1rem;
   max-width: 28vw;
 }
-
 #domain_input {
   height: 7vh;
   width: 25rem;
-  background-color: lightgrey;
+  background-color: snow;
   border: 3px solid black;
   border-radius: 1rem;
   margin-top: 1rem;
 }
-
 #submit_btn {
-  background-color: rgb(8, 101, 163);
+  background-color: var(--highlight-color);
   border: 1px solid black;
   border-radius: 1rem;
   cursor: pointer;
@@ -180,22 +205,19 @@ h3 {
   margin-top: 1rem;
   font-weight: bold;
 }
-
 #whitelist_list {
   width: 36.75vw;
   max-height: 12rem;
   overflow: auto;
-  background-color: white;
+  background-color: var(--primary-color);
   border: 3px solid black;
 }
-
 #whitelist_list p {
   font-size: 14px;
   font-weight: bold;
 }
-
 #insecure_cookies_chart {
   width: 20vw;
   max-width: 1000px;
-  background-color: white;
+  background-color: var(--primary-color);
 }

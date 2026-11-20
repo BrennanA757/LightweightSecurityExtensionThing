@@ -9,13 +9,13 @@
   <script src="../../static/chart.umd.js"></script>
   <div class="container">
     <div class="header"><h2 class="font-bold">Dashboard</h2></div>
-    <body>
-      <div class="menu menu_button_container">
-        <button id="home_menu_btn" class="menu_button_">Menu</button>
-        <button id="analytics_btn" class="menu_button_">Analytics</button>
-        <button id="toggleThemeBtn" class="menu_button_">Toggle Theme</button>
+    <body class="theme_toggle">
+      <div class="menu menu_button_container theme_toggle" id="menu_button_container">
+        <button id="home_menu_btn" class="menu_button_ theme_toggle">Menu</button>
+        <button id="analytics_btn" class="menu_button_ theme_toggle">Analytics</button>
+        <button id="toggle_theme_btn" class="menu_button_ theme_toggle">Toggle Theme</button>
       </div>
-      <div class="display-area view active" id="home_view">
+      <div class="display-area view active theme_toggle" id="home_view">
         <div class="progress-circle" id="score-circle">
           <span id="scoreText">Score: 100%</span>
           <div class="left-half-clipper" id="left-half-clipper">
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div id="cookie_section">
-          <div id="cookie_container">
+          <div class="theme_toggle" id="cookie_container">
             <h3>Detected Cookies</h3>
           </div>
           <div>
@@ -53,7 +53,7 @@
   <a target="_blank" href="https://icons8.com/icon/49/edit-pencil"
     >Edit Pencil</a
   >
-  <span style="color: white">icon by</span>
+  <span>icon by</span>
   <a target="_blank" href="https://icons8.com">Icons8</a>
   <script src="dashboard.js"></script>
   <script src="analytics_section.js"></script>
