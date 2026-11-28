@@ -6,11 +6,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function updateGraph() {
   let keys;
   const { found_cookies } = await chrome.storage.local.get("found_cookies");
-  if(found_cookies != undefined){
+  if (found_cookies != undefined) {
     keys = Object.keys(found_cookies);
-  }
-  else{
-    keys=[];
+  } else {
+    keys = [];
   }
 
   let xValues = [];
@@ -22,10 +21,15 @@ async function updateGraph() {
   //Push data onto lists
   for (let i = 0; i < 10 && i < keys.length; i++) {
     const date = dates[i];
-    const date_string = (date.getMonth() + 1) + "/" + date.getDate();
+    const date_string = date.getMonth() + 1 + "/" + date.getDate();
+
+    let date_length = 0;
+    if (found_cookies[date.toDateString()] != undefined) {
+      date_length = found_cookies[date.toDateString()].length;
+    }
 
     xValues.push(date_string);
-    yValues.push(found_cookies[date.toDateString()].length);
+    yValues.push(date_length);
   }
 
   const chart = document.getElementById("insecure_cookies_chart");
@@ -77,31 +81,31 @@ async function updateGraph() {
   });
 }
 
-function getSortedDatesList(keys){
+function getSortedDatesList(keys) {
   let dates = [];
   let days = [];
-  for(const key of keys){
+  for (const key of keys) {
     const date = new Date(key);
     dates.push(date);
     days.push(date.getDate());
   }
 
   const list_length = days.length;
-  for(let i = 0; i < list_length - 1; i++){
+  for (let i = 0; i < list_length - 1; i++) {
     let swap_index = i;
-    for(let j = i + 1; j < list_length; j++){
+    for (let j = i + 1; j < list_length; j++) {
       //Loop though other days. If found day smaller than days[swap_index], swap dates.
-      if(days[j] < days[swap_index]){
+      if (days[j] < days[swap_index]) {
         swap_index = j;
       }
     }
 
     //If found date smaller than smallest, swap
-    if(swap_index != i){
+    if (swap_index != i) {
       const temp_day = days[i];
       const temp_date = dates[i];
-      days[i]=days[swap_index];
-      dates[i]=dates[swap_index];
+      days[i] = days[swap_index];
+      dates[i] = dates[swap_index];
       days[swap_index] = temp_day;
       dates[swap_index] = temp_date;
     }
