@@ -13,10 +13,10 @@ let whitelisted_sites = [
 ];
 
 let whitelisted_sites_regexes = [
-  /.*google\.com/,
-  /.*fhsu\.edu/,
-  /.*youtube\.com/,
-  /.*joinhandshake\.com/,
+  "/.*google\\.com/",
+  "/.*fhsu\\.edu/",
+  "/.*youtube\\.com/",
+  "/.*joinhandshake\\.com/",
 ];
 
 //Initialize whitelist dictionaries on first install
@@ -42,7 +42,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse)=>{
 });
 
 async function runAnalysis() {
-  const response = await chrome.storage.local.get([WHITELIST_KEY, WHITELIST_REGEX_KEY, FOUND_COOKIES_KEY]);
+  const { whitelisted_sites_regexes, found_cookies } = await chrome.storage.local.get([WHITELIST_REGEX_KEY, FOUND_COOKIES_KEY]);
 
   const cookies = await getCookies();
   
@@ -51,8 +51,9 @@ async function runAnalysis() {
     document.getElementById("score").textContent = "N/A";
     return;
   }
-  
-  const bad_cookies = cookies.filter(c=> !isSecure(c, response.whitelisted_sites));
+
+  const bad_cookies = await removeInsecureCookies(cookies, whitelisted_sites_regexes);
+  await updateFoundCookiesByDates(found_cookies, bad_cookies);
 
   const bad_cookies_num = bad_cookies.length;
   const cookies_num = cookies.length;
@@ -65,26 +66,57 @@ async function runAnalysis() {
     bad_cookies: bad_cookies,
   });
 
-  await updateFoundCookiesByDates(response.found_cookies, bad_cookies);
-  await removeInsecureCookies(cookies, response.whitelisted_sites);
-
   //Notify of finished analysis
   chrome.tabs.query({ active: true, currentWindow: true}, (tabs)=>{
-    const activeTab = tabs[0]
+    const activeTab = tabs[0];
 
     if (activeTab && activeTab.url?.includes(dashboard_url)){
       chrome.runtime.sendMessage({
         action: "finishedAnalysis"
       });
     }
-  })
+  });
 }
 
-function isSecure(cookie, whitelisted_sites_regexes) {
-  if ((!cookie.isSecure || !cookie.httpOnly || !cookie.sameSite) && !getIsCookieWhitelisted(cookie, whitelisted_sites_regexes)) {
+async function removeInsecureCookies(cookies, whitelisted_sites_regexes) {
+
+  let bad_cookies=[];
+
+  //Remove insecure cookies
+  for (const cookie of cookies) {
+    const cookie_url =
+      cookie.url === undefined
+        ? `https://${cookie.domain}${cookie.path}`
+        : cookie.url;
+
+        
+    //Remove potentially dangerous cookies
+    if (!isSecure(cookie, cookie_url, whitelisted_sites_regexes) && !isUsernameOrPassword(cookie)) {
+      await chrome.cookies.remove({ name: cookie.name, url: cookie_url });
+      console.log("Removed: " + cookie.name + " from " + cookie.domain);
+
+      bad_cookies.push(cookie);
+    }
+  }
+
+  return bad_cookies;
+}
+
+function isSecure(cookie, cookie_url, whitelisted_sites_regexes) {
+  if ((!cookie.isSecure || !cookie.httpOnly || !cookie.sameSite) && !getIsCookieWhitelisted(cookie_url, whitelisted_sites_regexes)) {
     return false;
   }
   return true;
+}
+
+function isUsernameOrPassword(cookie){
+  const potential_names=/user|name|login|email|pass|pwd|auth|token|sess/i;
+
+  if(potential_names.test(cookie.name)){
+    return true;
+  }
+
+  return false;
 }
 
 async function updateFoundCookiesByDates(found_cookies, bad_cookies) {
@@ -95,10 +127,11 @@ async function updateFoundCookiesByDates(found_cookies, bad_cookies) {
   }
 
   if(bad_cookies == undefined){
+    console.log("No bad cookies found. Aborting updating found_cookies.");
     return;
   }
 
-  //Updates cookie list when new, distinct insecure cookie is found
+  //Updates cookie list when a new, distinct insecure cookie is found
   bad_cookies.forEach((cookie) => {
     if (!found_cookies[today].includes(cookie.name)) {
       found_cookies[today].push(cookie.name);
@@ -110,13 +143,11 @@ async function updateFoundCookiesByDates(found_cookies, bad_cookies) {
   });
 }
 
-function getIsCookieWhitelisted(cookie, whitelisted_sites_regexes){
-  for(const w of whitelisted_sites_regexes){
-    let cookie_url =
-        cookie.url === undefined
-          ? `https://${cookie.domain}${cookie.path}`
-          : cookie.url;
+function getIsCookieWhitelisted(cookie_url, whitelisted_sites_regexes){
 
+  const regex_list = Object.values(whitelisted_sites_regexes || {});
+
+  for(const w of regex_list){
     const regex = new RegExp(w);
 
     if(regex.test(cookie_url)){
@@ -125,17 +156,6 @@ function getIsCookieWhitelisted(cookie, whitelisted_sites_regexes){
   }
 
   return false;
-}
-
-async function removeInsecureCookies(cookies, whitelist) {
-  //Remove insecure cookies
-  for (const cookie of cookies) {
-    if (!isSecure(cookie, whitelist)) {
-      //Remove potentially dangerous cookies
-      await chrome.cookies.remove({ name: cookie.name, url: cookieUrl });
-      console.log("Removed: " + cookie.name + " from " + cookie.domain);
-    }
-  }
 }
 
 async function getCookies() {
