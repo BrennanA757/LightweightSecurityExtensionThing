@@ -69,7 +69,6 @@ async function runAnalysis() {
   await removeInsecureCookies(cookies, response.whitelisted_sites);
 
   //Notify of finished analysis
-  
   chrome.tabs.query({ active: true, currentWindow: true}, (tabs)=>{
     const activeTab = tabs[0]
 
@@ -132,23 +131,9 @@ async function removeInsecureCookies(cookies, whitelist) {
   //Remove insecure cookies
   for (const cookie of cookies) {
     if (!isSecure(cookie, whitelist)) {
-      let has_domain = false;
-      for (let d in whitelisted_sites_regexes) {
-        if (whitelisted_sites_regexes[d].test(cookie.domain)) {
-          has_domain = true;
-          break;
-        }
-      }
-
-      if (has_domain) {
-        continue;
-      }
-
-      
-
-      //commented out temporarily
-      // await chrome.cookies.remove({ name: cookie.name, url: cookieUrl });
-      //console.log("Removed: " + cookie.name + " from " + cookie.domain);
+      //Remove potentially dangerous cookies
+      await chrome.cookies.remove({ name: cookie.name, url: cookieUrl });
+      console.log("Removed: " + cookie.name + " from " + cookie.domain);
     }
   }
 }
